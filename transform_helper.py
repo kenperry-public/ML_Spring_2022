@@ -218,13 +218,20 @@ class ShiftedPrice_Helper():
 
         return dfs
 
-    def plot_data(self, dfs, xlabel="Size", ylabel="Price", ax=None):
+    def plot_data(self, dfs, xlabel="Size", ylabel="Price", ax=None, nolabels=False):
         if ax is None:
             fig, ax = plt.subplots(1,1, figsize=(12,6) )
-            
-        _= ax.scatter(dfs[0]["area"],         dfs[0]["price"], label="$time_0$")
-        _= ax.scatter(dfs[1]["area"],  2000 + dfs[1]["price"], label="$time_1$")
-        _= ax.legend()
+
+        x0, y0 = dfs[0]["area"],  dfs[0]["price"]
+        x1, y1 = dfs[1]["area"],  dfs[1]["price"] +2000
+
+        if nolabels:
+            x, y = pd.concat( [x0, x1]), pd.concat( [y0, y1] )
+            _= ax.scatter(x,y)
+        else:
+            _= ax.scatter(x0,  y0, label="$time_0$")
+            _= ax.scatter(x1,  y1, label="$time_1$")
+            _= ax.legend()
 
         _= ax.set_xlabel(xlabel)
         _= ax.set_ylabel(ylabel)
